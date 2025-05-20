@@ -23,12 +23,13 @@ public class JwtTokenProvider {
     }
 
     // 토큰 생성
-    public String generateToken(String userId) {
+    public String generateToken(String name, String userId) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expirationMs);
 
         return Jwts.builder()
                 .setSubject(userId)
+                .claim("name", name)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(key, SignatureAlgorithm.HS256)

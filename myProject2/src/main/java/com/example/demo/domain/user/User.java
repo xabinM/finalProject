@@ -14,15 +14,18 @@ import com.example.demo.domain.supplement.SupplementIntake;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "members")
-public class User extends BaseTimeEntity {
+public class User extends BaseTimeEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -85,5 +88,15 @@ public class User extends BaseTimeEntity {
     public void assignPharmacist(Pharmacist pharmacist) {
         this.pharmacist = pharmacist;
         pharmacist.setUser(this);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getUsername() {
+        return "";
     }
 }

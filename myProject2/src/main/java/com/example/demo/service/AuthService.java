@@ -37,7 +37,7 @@ public class AuthService {
         User user = userRepository.findByName(username)
                 .orElseThrow(() -> new UsernameNotFoundException(Exception.MEMBER_NOT_FOUND_EXCEPTION.getMessage()));
 
-        return jwtTokenProvider.generateToken(user.getId().toString());
+        return jwtTokenProvider.generateToken(user.getName(), user.getId().toString());
     }
 
     public void signup(SignupRequest request) {
