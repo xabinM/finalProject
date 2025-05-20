@@ -1,11 +1,12 @@
 package com.example.demo.service;
 
-import com.example.demo.domain.member.Member;
+import com.example.demo.domain.enums.UserRole;
+import com.example.demo.domain.user.Pharmacist;
+import com.example.demo.domain.user.User;
 import com.example.demo.dto.auth.SignupRequest;
 import com.example.demo.exception.Exception;
-import com.example.demo.repository.MemberRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.security.JwtTokenProvider;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,39 +20,53 @@ import java.util.Optional;
 public class AuthService {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
-    public Member authenticate(String username, String password) {
-        Member member = memberRepository.findByUsername(username)
+    public User authenticate(String username, String password) {
+        User user = userRepository.findByName(username)
                 .orElseThrow(() -> new UsernameNotFoundException(Exception.MEMBER_NOT_FOUND_EXCEPTION.getMessage()));
 
-        if (!member.getPassword().equals(password)) {
+        if (!user.getPassword().equals(password)) {
             throw new BadCredentialsException(Exception.PASSWORD_NOT_MATCH_EXCEPTION.getMessage());
         }
 
-        return member;
+        return user;
     }
 
     public String getToken(String username) {
-        Member member = memberRepository.findByUsername(username)
+        User user = userRepository.findByName(username)
                 .orElseThrow(() -> new UsernameNotFoundException(Exception.MEMBER_NOT_FOUND_EXCEPTION.getMessage()));
 
-        return jwtTokenProvider.generateToken(member.getId().toString());
+        return jwtTokenProvider.generateToken(user.getId().toString());
     }
 
     public void signup(SignupRequest request) {
-        Optional<Member> existingMember = memberRepository.findByUsername(request.getUsername());
+        Optional<User> existingMember = userRepository.findByName(request.getName());
         if (existingMember.isPresent()) {
             throw new IllegalArgumentException(Exception.SIGNUP_USERNAME_DUPLICATE_EXCEPTION.getMessage());
         }
 
-        Member member = new Member(
-                request.getUsername(),
+        User user = new User(
+                request.getName(),
                 request.getPassword(),
-                request.getEmail()
+                request.getEmail(),
+                request.getBirthDate(),
+                request.getGender(),
+                request.getNickname(),
+                request.getProfileImage(),
+                request.getRole()
         );
 
-        memberRepository.save(member);
+        if (user.getRole() == UserRole.PHARMACIST) {
+            Pharmacist pharmacist = new Pharmacist(
+                    request.getLicenseNumber(),
+                    request.getHospitalName(),
+                    user
+            );
+            user.assignPharmacist(pharmacist);
+        }
+
+        userRepository.save(user);
     }
 
     public boolean isLogin(HttpServletRequest request) {

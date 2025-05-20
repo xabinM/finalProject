@@ -4,11 +4,11 @@ import lombok.Getter;
 
 @Getter
 public class LoginResponse {
-    private final LoginMemberDto member;
+    private final LoginMemberDto user;
     private final String token;
 
-    public LoginResponse(LoginMemberDto member, String token) {
-        this.member = member;
+    public LoginResponse(LoginMemberDto user, String token) {
+        this.user = user;
         this.token = token;
     }
 }

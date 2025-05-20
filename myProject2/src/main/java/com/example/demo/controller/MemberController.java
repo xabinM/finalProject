@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.domain.member.Member;
+import com.example.demo.domain.user.User;
 import com.example.demo.dto.ErrorResponse;
 import com.example.demo.dto.member.MyInfoResponse;
 import com.example.demo.service.MemberService;
@@ -21,9 +21,9 @@ public class MemberController {
     @GetMapping("/memberInfo")
     public ResponseEntity<?> lookUpMyInfo(HttpServletRequest request) {
         try {
-            Member member = memberService.lookupMyInfo(request);
+            User user = memberService.lookupMyInfo(request);
 
-            return ResponseEntity.ok(new MyInfoResponse(member.getUsername(), member.getEmail()));
+            return ResponseEntity.ok(new MyInfoResponse(user.getName(), user.getEmail()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
         }
