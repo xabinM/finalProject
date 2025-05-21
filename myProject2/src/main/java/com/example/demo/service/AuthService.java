@@ -10,6 +10,8 @@ import com.example.demo.security.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +19,20 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthService implements UserDetailsService {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
 
-    public User authenticate(String username, String password) {
-        User user = userRepository.findByName(username)
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(Exception.MEMBER_NOT_FOUND_EXCEPTION.getMessage()));
+    }
+
+    public User authenticate(String email, String password) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(Exception.MEMBER_NOT_FOUND_EXCEPTION.getMessage()));
 
         if (!user.getPassword().equals(password)) {
@@ -33,11 +42,11 @@ public class AuthService {
         return user;
     }
 
-    public String getToken(String username) {
-        User user = userRepository.findByName(username)
+    public String getToken(String email) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(Exception.MEMBER_NOT_FOUND_EXCEPTION.getMessage()));
 
-        return jwtTokenProvider.generateToken(user.getName(), user.getId().toString());
+        return jwtTokenProvider.generateToken(user.getEmail(), user.getId().toString());
     }
 
     public void signup(SignupRequest request) {
@@ -77,4 +86,5 @@ public class AuthService {
 
     public void logout(HttpServletRequest request) {
     }
+
 }

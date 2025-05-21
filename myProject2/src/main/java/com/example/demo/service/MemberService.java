@@ -1,10 +1,13 @@
 package com.example.demo.service;
 
+import com.example.demo.domain.enums.Gender;
 import com.example.demo.domain.user.User;
+import com.example.demo.dto.users.ProfileEditFormRequest;
 import com.example.demo.exception.Exception;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -14,16 +17,18 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     private final UserRepository userRepository;
-    private final JwtTokenProvider jwtTokenProvider;
 
-    public User lookupMyInfo(HttpServletRequest request) {
-        String token = jwtTokenProvider.resolveToken(request);
-
-        Long id = Long.valueOf(jwtTokenProvider.getUserIdFromToken(token));
-
+    @Transactional
+    public void changeProfile(Long id, ProfileEditFormRequest request) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException(Exception.MEMBER_NOT_FOUND_EXCEPTION.getMessage()));
+                .orElseThrow(() -> new IllegalArgumentException(Exception.MEMBER_NOT_FOUND_EXCEPTION.getMessage()));
 
-        return user;
+        user.setName(request.getName());
+        user.setBirthDate(request.getBirthDate());
+        user.setGender(Gender.valueOf(request.getGender()));
+        user.setNickname(request.getNickname());
+        user.setProfileImage(request.getProfileImage());
+
+        userRepository.save(user);
     }
 }

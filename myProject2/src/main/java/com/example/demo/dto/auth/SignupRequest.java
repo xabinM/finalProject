@@ -35,19 +35,4 @@ public class SignupRequest {
     // 약사 전용 필드 (선택)
     private String licenseNumber;
     private String hospitalName;
-
-    public SignupRequest(String name, String password, String email, LocalDate birthDate,
-                         String gender, String nickname, String profileImage, String role,
-                         String licenseNumber, String hospitalName) {
-        this.name = name;
-        this.password = password;
-        this.email = email;
-        this.birthDate = birthDate;
-        this.gender = gender;
-        this.nickname = nickname;
-        this.profileImage = profileImage;
-        this.role = role;
-        this.licenseNumber = licenseNumber;
-        this.hospitalName = hospitalName;
-    }
 }
