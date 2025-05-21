@@ -20,4 +20,13 @@ public class Column extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "pharmacist_id")
     private Pharmacist pharmacist;
+
+    public Column() {
+    }
+
+    public Column(String title, String content, Pharmacist pharmacist) {
+        this.title = title;
+        this.content = content;
+        this.pharmacist = pharmacist;
+    }
 }
