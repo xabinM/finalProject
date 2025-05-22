@@ -1,13 +1,11 @@
 package com.example.demo.controller;
 
-import com.example.demo.domain.user.User;
 import com.example.demo.dto.*;
 import com.example.demo.dto.auth.LoginMemberDto;
 import com.example.demo.dto.auth.LoginRequest;
 import com.example.demo.dto.auth.LoginResponse;
 import com.example.demo.dto.auth.SignupRequest;
 import com.example.demo.service.AuthService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +21,10 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid LoginRequest request) {
         try {
-            User user = authService.authenticate(request.getEmail(), request.getPassword());
+            LoginMemberDto userDto = authService.authenticate(request.getEmail(), request.getPassword());
             String token = authService.getToken(request.getEmail());
 
-            return ResponseEntity
-                    .ok(new LoginResponse(
-                            new LoginMemberDto(user.getId(), user.getName(), user.getEmail()), token)
-                    );
+            return ResponseEntity.ok(new LoginResponse(userDto, token));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
         }
@@ -44,13 +39,5 @@ public class AuthController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
         }
-    }
-
-    @GetMapping("/check")
-    public ResponseEntity<?> checkLogin(HttpServletRequest request) {
-        if (authService.isLogin(request)) {
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.badRequest().build();
     }
 }

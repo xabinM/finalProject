@@ -7,8 +7,8 @@ public class LoginResponse {
     private final LoginMemberDto user;
     private final String token;
 
-    public LoginResponse(LoginMemberDto user, String token) {
-        this.user = user;
+    public LoginResponse(LoginMemberDto userDto, String token) {
+        this.user = userDto;
         this.token = token;
     }
 }

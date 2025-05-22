@@ -3,11 +3,11 @@ package com.example.demo.service;
 import com.example.demo.domain.enums.UserRole;
 import com.example.demo.domain.user.Pharmacist;
 import com.example.demo.domain.user.User;
+import com.example.demo.dto.auth.LoginMemberDto;
 import com.example.demo.dto.auth.SignupRequest;
 import com.example.demo.exception.Exception;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.JwtTokenProvider;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,7 +31,7 @@ public class AuthService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(Exception.MEMBER_NOT_FOUND_EXCEPTION.getMessage()));
     }
 
-    public User authenticate(String email, String password) {
+    public LoginMemberDto authenticate(String email, String password) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(Exception.MEMBER_NOT_FOUND_EXCEPTION.getMessage()));
 
@@ -39,7 +39,7 @@ public class AuthService implements UserDetailsService {
             throw new BadCredentialsException(Exception.PASSWORD_NOT_MATCH_EXCEPTION.getMessage());
         }
 
-        return user;
+        return new LoginMemberDto(user);
     }
 
     public String getToken(String email) {
@@ -77,14 +77,4 @@ public class AuthService implements UserDetailsService {
 
         userRepository.save(user);
     }
-
-    public boolean isLogin(HttpServletRequest request) {
-        String token = jwtTokenProvider.resolveToken(request);
-
-        return token != null && jwtTokenProvider.validateToken(token);
-    }
-
-    public void logout(HttpServletRequest request) {
-    }
-
 }
