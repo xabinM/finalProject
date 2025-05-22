@@ -5,6 +5,7 @@ import com.example.demo.domain.user.Pharmacist;
 import com.example.demo.domain.user.User;
 import com.example.demo.dto.column.ColumnRequest;
 import com.example.demo.dto.column.ColumnResponse;
+import com.example.demo.exception.Exception;
 import com.example.demo.repository.ColumnRepository;
 import com.example.demo.repository.PharmacistRepository;
 import jakarta.transaction.Transactional;
@@ -24,7 +25,7 @@ public class ColumnService {
     public void saveColumn(ColumnRequest request, User user) {
         Pharmacist pharmacist = user.getPharmacist();
         if (pharmacist == null) {
-            throw new IllegalArgumentException("약사만 컬럼을 작성할 수 있습니다.");
+            throw new IllegalArgumentException(Exception.ONLY_WRITE_COLUMN_BY_PHARMACIST.getMessage());
         }
 
         Column column = new Column(
@@ -39,12 +40,12 @@ public class ColumnService {
     public Column getColumnById(Long id) {
 
         return columnRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 칼럼입니다."));
+                .orElseThrow(() -> new IllegalArgumentException(Exception.NOT_EXIST_COLUMN.getMessage()));
     }
 
     public List<ColumnResponse> getColumnsPerPharmacist(Long id) {
         Pharmacist pharmacist = pharmacistRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 약사는 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalArgumentException(Exception.NOT_EXIST_PHARMACIST.getMessage()));
 
         return pharmacist.getColumns().stream()
                 .map(ColumnResponse::new)
@@ -54,10 +55,10 @@ public class ColumnService {
     @Transactional
     public void updateColumn(Long id, ColumnRequest request, User user) {
         Column column = columnRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 칼럼입니다."));
+                .orElseThrow(() -> new IllegalArgumentException(Exception.NOT_EXIST_COLUMN.getMessage()));
 
         if (!column.getPharmacist().getUser().getId().equals(user.getId())) {
-            throw new IllegalArgumentException("칼럼 작성자만 수정할 수 있습니다.");
+            throw new IllegalArgumentException(Exception.ONLY_EDIT_COLUMN_BY_WRITER.getMessage());
         }
 
         column.setTitle(request.getTitle());
@@ -70,10 +71,10 @@ public class ColumnService {
     public void deleteColumn(Long id, User user) {
         Column column = columnRepository.
                 findById(id).
-                orElseThrow(() -> new IllegalArgumentException("존재하지 않는 칼럼입니다."));
+                orElseThrow(() -> new IllegalArgumentException(Exception.NOT_EXIST_COLUMN.getMessage()));
 
         if (!column.getPharmacist().getUser().getId().equals(user.getId())) {
-            throw new IllegalArgumentException("칼럼 작성자만 삭제할 수 있습니다.");
+            throw new IllegalArgumentException(Exception.ONLY_EDIT_COLUMN_BY_WRITER.getMessage());
         }
 
         columnRepository.deleteById(id);
