@@ -22,4 +22,15 @@ public class SupplementIntakeRecord {
 
     @ManyToOne
     private CalendarLog calendarLog;
+
+    public SupplementIntakeRecord() {
+    }
+
+    public SupplementIntakeRecord(String supplementName, int amountTakenMg,
+                                  String timeType, CalendarLog calendarLog) {
+        this.supplementName = supplementName;
+        this.amountTakenMg = amountTakenMg;
+        this.timeType = IntakeTimeType.valueOf(timeType.toUpperCase());
+        this.calendarLog = calendarLog;
+    }
 }

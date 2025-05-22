@@ -26,4 +26,12 @@ public class CalendarLog {
 
     @OneToMany(mappedBy = "calendarLog", cascade = CascadeType.ALL)
     private List<SupplementIntakeRecord> intakeRecords = new ArrayList<>();
+
+    public CalendarLog() {
+    }
+
+    public CalendarLog(LocalDate date, User user) {
+        this.date = date;
+        this.user = user;
+    }
 }
