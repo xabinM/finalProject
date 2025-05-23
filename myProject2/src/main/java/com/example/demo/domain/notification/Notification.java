@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -15,8 +17,22 @@ public class Notification extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String message;
+    private LocalDateTime notifiedAt;
     private boolean IsRead;
 
     @ManyToOne
     private User user;
+
+    public void changeInReadStatus () {
+        this.setIsRead(true);
+    }
+
+    public Notification() {
+    }
+
+    public Notification(String message, LocalDateTime notifiedAt, User user) {
+        this.message = message;
+        this.notifiedAt = notifiedAt;
+        this.user = user;
+    }
 }
