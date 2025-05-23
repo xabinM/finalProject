@@ -4,12 +4,12 @@ import com.example.demo.domain.column.Column;
 import lombok.Getter;
 
 @Getter
-public class ColumnResponse {
+public class ColumnResponseDto {
     private String title;
     private String content;
     private String pharmacistName;
 
-    public ColumnResponse(Column column) {
+    public ColumnResponseDto(Column column) {
         this.title = column.getTitle();
         this.content = column.getContent();
         this.pharmacistName = column.getPharmacist().getUser().getName();

@@ -11,7 +11,6 @@ public class ColumnDetailResponse {
     private String content;
     private LocalDateTime createdAt;
     private String pharmacistName;
-    private Long pharmacistId;
 
     public ColumnDetailResponse(Long id, String title, String content, LocalDateTime createdAt, String pharmacistName) {
         this.id = id;

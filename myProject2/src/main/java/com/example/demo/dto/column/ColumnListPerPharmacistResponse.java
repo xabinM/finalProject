@@ -1,6 +1,5 @@
 package com.example.demo.dto.column;
 
-import com.example.demo.domain.column.Column;
 import lombok.Getter;
 
 import java.util.List;
@@ -8,9 +7,9 @@ import java.util.List;
 @Getter
 public class ColumnListPerPharmacistResponse {
 
-    private List<ColumnResponse> columns;
+    private List<ColumnResponseDto> columns;
 
-    public ColumnListPerPharmacistResponse(List<ColumnResponse> columns) {
+    public ColumnListPerPharmacistResponse(List<ColumnResponseDto> columns) {
         this.columns = columns;
     }
 }

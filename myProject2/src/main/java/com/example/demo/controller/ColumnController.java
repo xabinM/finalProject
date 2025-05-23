@@ -51,7 +51,7 @@ public class ColumnController {
     @GetMapping("/pharmacists/{id}")
     public ResponseEntity<?> getColumnsPerPharmacist(@PathVariable Long id) {
         try {
-            List<ColumnResponse> columns = columnService.getColumnsPerPharmacist(id);
+            List<ColumnResponseDto> columns = columnService.getColumnsPerPharmacist(id);
 
             return ResponseEntity.ok().body(new ColumnListPerPharmacistResponse(columns));
         } catch (Exception e) {
@@ -90,7 +90,7 @@ public class ColumnController {
     @GetMapping("/all")
     public ResponseEntity<?> getAllColumns() {
         try {
-            List<ColumnResponse> columns = columnService.getAllColumns();
+            List<ColumnResponseDto> columns = columnService.getAllColumns();
 
             return ResponseEntity.ok().body(new ColumnAllListResponse(columns));
         } catch (Exception e) {

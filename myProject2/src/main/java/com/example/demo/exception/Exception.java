@@ -13,10 +13,13 @@ public enum Exception {
     ONLY_WRITE_COLUMN_BY_PHARMACIST("약사만 컬럼을 작성할 수 있습니다"),
     NOT_EXIST_COLUMN("존재하지 않는 칼럼입니다."),
     NOT_EXIST_PHARMACIST("해당 약사는 존재하지 않습니다"),
-    ONLY_EDIT_COLUMN_BY_WRITER("칼럼 작성자만 수정 및 삭제 할 수 있습니다.")
+    ONLY_EDIT_COLUMN_BY_WRITER("칼럼 작성자만 수정 및 삭제 할 수 있습니다."),
+
+    //post
+    NOT_EXIST_POST("해당 게시글이 존재하지 않습니다."),
+    ONLY_EDIT_POST_BY_WRITER("작성자만 수정 및 삭제할 수 있습니다."),
+
     ;
-
-
     private static final String PREFIX = "[ERROR] ";
     private final String message;
 
