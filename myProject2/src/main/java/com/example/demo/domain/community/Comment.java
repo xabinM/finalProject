@@ -20,4 +20,13 @@ public class Comment extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private CommunityPost communityPost;
+
+    public Comment() {
+    }
+
+    public Comment(String content, User user, CommunityPost communityPost) {
+        this.content = content;
+        this.user = user;
+        this.communityPost = communityPost;
+    }
 }
