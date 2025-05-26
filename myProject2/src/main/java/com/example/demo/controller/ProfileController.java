@@ -3,8 +3,9 @@ package com.example.demo.controller;
 import com.example.demo.domain.user.User;
 import com.example.demo.dto.ErrorResponse;
 import com.example.demo.dto.users.ProfileEditFormRequest;
+import com.example.demo.dto.users.UserDto;
 import com.example.demo.dto.users.UserProfileResponse;
-import com.example.demo.service.MemberService;
+import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,14 +16,15 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ProfileController {
 
-    private final MemberService memberService;
+    private final UserService userService;
 
     @GetMapping("/profile")
     public ResponseEntity<?> profile(@AuthenticationPrincipal User user) {
         try {
+            UserDto userProfile = userService.getUserProfile(user);
+
             return ResponseEntity.ok(
-                    new UserProfileResponse(user.getName(), user.getEmail(), user.getBirthDate(),
-                            user.getGender(), user.getNickname(), user.getProfileImage())
+                    new UserProfileResponse(userProfile)
             );
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
@@ -33,7 +35,7 @@ public class ProfileController {
     public ResponseEntity<?> editProfile(@AuthenticationPrincipal User user,
                                          @RequestBody ProfileEditFormRequest request) {
         try {
-            memberService.changeProfile(user.getId(), request);
+            userService.changeProfile(user, request);
 
             return ResponseEntity.noContent().build();
         } catch (Exception e) {

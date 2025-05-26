@@ -11,6 +11,7 @@ import com.example.demo.domain.follow.Follow;
 import com.example.demo.domain.notification.Notification;
 import com.example.demo.domain.quest.QuestHistory;
 import com.example.demo.domain.supplement.SupplementIntake;
+import com.example.demo.dto.users.ProfileEditFormRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -90,6 +91,14 @@ public class User extends BaseTimeEntity implements UserDetails {
         pharmacist.setUser(this);
     }
 
+    public void editInfo(ProfileEditFormRequest request) {
+        this.name = request.getName();
+        this.birthDate = request.getBirthDate();
+        this.gender = Gender.valueOf(request.getGender());
+        this.nickname = request.getNickname();
+        this.profileImage = request.getProfileImage();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
@@ -97,6 +106,6 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.name;
+        return "";
     }
 }
