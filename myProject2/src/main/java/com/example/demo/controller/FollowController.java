@@ -33,9 +33,9 @@ public class FollowController {
     @GetMapping("/my")
     public ResponseEntity<?> getMyFollows(@AuthenticationPrincipal User user) {
         try {
-            List<FollowDto> followDtos = followService.getMyFollows(user.getId());
+            List<FollowDto> follows = followService.getMyFollows(user.getId());
 
-            return ResponseEntity.ok().body(new FollowListResponse(followDtos));
+            return ResponseEntity.ok().body(new FollowListResponse(follows));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

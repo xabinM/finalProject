@@ -4,6 +4,7 @@ import com.example.demo.domain.follow.Follow;
 import com.example.demo.domain.user.Pharmacist;
 import com.example.demo.domain.user.User;
 import com.example.demo.dto.follow.FollowDto;
+import com.example.demo.exception.Exception;
 import com.example.demo.repository.FollowRepository;
 import com.example.demo.repository.PharmacistRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class FollowService {
 
     public void follow(User user, Long pharmacistId) {
         Pharmacist pharmacist = pharmacistRepository.findById(pharmacistId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 약사입니다."));
+                .orElseThrow(() -> new IllegalArgumentException(Exception.NOT_EXIST_PHARMACIST.getMessage()));
 
         Follow follow = new Follow(
                 user,
@@ -40,7 +41,7 @@ public class FollowService {
 
     public void deleteFollow(User user, Long pharmacistId) {
         Follow follow = followRepository.findByUserIdAndPharmacistId(user.getId(), pharmacistId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 팔로우는 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalArgumentException(Exception.NOT_EXIST_FOLLOW.getMessage()));
 
         followRepository.delete(follow);
     }

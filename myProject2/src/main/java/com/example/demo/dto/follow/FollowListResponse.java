@@ -7,9 +7,9 @@ import java.util.List;
 @Getter
 public class FollowListResponse {
 
-    private List<FollowDto> followDtos;
+    private List<FollowDto> follows;
 
-    public FollowListResponse(List<FollowDto> followDtos) {
-        this.followDtos = followDtos;
+    public FollowListResponse(List<FollowDto> follows) {
+        this.follows = follows;
     }
 }
