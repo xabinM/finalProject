@@ -7,9 +7,9 @@ import java.util.List;
 @Getter
 public class ColumnListPerPharmacistResponse {
 
-    private List<ColumnResponseDto> columns;
+    private final List<ColumnDto> columns;
 
-    public ColumnListPerPharmacistResponse(List<ColumnResponseDto> columns) {
+    public ColumnListPerPharmacistResponse(List<ColumnDto> columns) {
         this.columns = columns;
     }
 }

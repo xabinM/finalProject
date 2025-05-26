@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.domain.column.Column;
 import com.example.demo.domain.user.User;
 import com.example.demo.dto.ErrorResponse;
 import com.example.demo.dto.column.*;
@@ -35,13 +34,11 @@ public class ColumnController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getColumnInfo(@PathVariable Long id) {
         try {
-            Column column = columnService.getColumnById(id);
+            ColumnDetailDto columnDetail = columnService.getColumnDetail(id);
 
             return ResponseEntity
                     .ok()
-                    .body(new ColumnDetailResponse(column.getId(), column.getTitle(),
-                            column.getContent(), column.getCreatedAt(),
-                            column.getPharmacist().getUser().getName()));
+                    .body(new ColumnDetailResponse(columnDetail));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
         }
@@ -51,7 +48,7 @@ public class ColumnController {
     @GetMapping("/pharmacists/{id}")
     public ResponseEntity<?> getColumnsPerPharmacist(@PathVariable Long id) {
         try {
-            List<ColumnResponseDto> columns = columnService.getColumnsPerPharmacist(id);
+            List<ColumnDto> columns = columnService.getColumnsPerPharmacist(id);
 
             return ResponseEntity.ok().body(new ColumnListPerPharmacistResponse(columns));
         } catch (Exception e) {
@@ -90,7 +87,7 @@ public class ColumnController {
     @GetMapping("/all")
     public ResponseEntity<?> getAllColumns() {
         try {
-            List<ColumnResponseDto> columns = columnService.getAllColumns();
+            List<ColumnDto> columns = columnService.getAllColumns();
 
             return ResponseEntity.ok().body(new ColumnAllListResponse(columns));
         } catch (Exception e) {

@@ -3,8 +3,9 @@ package com.example.demo.service;
 import com.example.demo.domain.column.Column;
 import com.example.demo.domain.user.Pharmacist;
 import com.example.demo.domain.user.User;
+import com.example.demo.dto.column.ColumnDetailDto;
 import com.example.demo.dto.column.ColumnRequest;
-import com.example.demo.dto.column.ColumnResponseDto;
+import com.example.demo.dto.column.ColumnDto;
 import com.example.demo.exception.Exception;
 import com.example.demo.repository.ColumnRepository;
 import com.example.demo.repository.PharmacistRepository;
@@ -37,18 +38,20 @@ public class ColumnService {
         columnRepository.save(column);
     }
 
-    public Column getColumnById(Long id) {
+    public ColumnDetailDto getColumnDetail(Long id) {
 
-        return columnRepository.findById(id)
+        Column column =  columnRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(Exception.NOT_EXIST_COLUMN.getMessage()));
+
+        return new ColumnDetailDto(column);
     }
 
-    public List<ColumnResponseDto> getColumnsPerPharmacist(Long id) {
+    public List<ColumnDto> getColumnsPerPharmacist(Long id) {
         Pharmacist pharmacist = pharmacistRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(Exception.NOT_EXIST_PHARMACIST.getMessage()));
 
         return pharmacist.getColumns().stream()
-                .map(ColumnResponseDto::new)
+                .map(ColumnDto::new)
                 .toList();
     }
 
@@ -80,11 +83,11 @@ public class ColumnService {
         columnRepository.deleteById(id);
     }
 
-    public List<ColumnResponseDto> getAllColumns() {
+    public List<ColumnDto> getAllColumns() {
         List<Column> columns = columnRepository.findAll();
 
         return columns.stream()
-                .map(ColumnResponseDto::new)
+                .map(ColumnDto::new)
                 .toList();
     }
 }
