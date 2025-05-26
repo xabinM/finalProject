@@ -2,10 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.enums.PostSortStatus;
 import com.example.demo.domain.user.User;
-import com.example.demo.dto.community.CommunityPostDto;
-import com.example.demo.dto.community.CommunityRequest;
-import com.example.demo.dto.community.PostListResponse;
-import com.example.demo.dto.community.RegisterPostResponse;
+import com.example.demo.dto.community.*;
 import com.example.demo.service.CommunityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +50,7 @@ public class CommunityController {
         try {
             CommunityPostDto detail = communityService.getPostById(id);
 
-            return ResponseEntity.ok().body(detail);
+            return ResponseEntity.ok().body(new PostResponse(detail));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
