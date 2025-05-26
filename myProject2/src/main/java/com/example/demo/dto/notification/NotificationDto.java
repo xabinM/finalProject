@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
 
 @Getter
 public class NotificationDto {
-    private Long id;
-    private String message;
-    private boolean isRead;
-    private LocalDateTime notifiedAt;
+    private final Long id;
+    private final String message;
+    private final boolean isRead;
+    private final LocalDateTime notifiedAt;
 
     public NotificationDto(Long id, String message, boolean isRead, LocalDateTime notifiedAt) {
         this.id = id;

@@ -7,9 +7,9 @@ import java.util.List;
 @Getter
 public class NotificationListResponse {
 
-    private List<NotificationDto> notificationDtos;
+    private final List<NotificationDto> notifications;
 
-    public NotificationListResponse(List<NotificationDto> notificationDtos) {
-        this.notificationDtos = notificationDtos;
+    public NotificationListResponse(List<NotificationDto> notifications) {
+        this.notifications = notifications;
     }
 }

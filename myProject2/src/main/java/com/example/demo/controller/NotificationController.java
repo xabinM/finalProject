@@ -23,7 +23,6 @@ public class NotificationController {
     public ResponseEntity<?> registerNotification(@RequestBody NotificationRequest request,
                                                      @AuthenticationPrincipal User user) {
         try {
-            System.out.println("와오와요ㅗㅇ" + request.toString());
 
             notificationService.registerNotification(user, request);
 
@@ -36,9 +35,9 @@ public class NotificationController {
     @GetMapping("/today")
     public ResponseEntity<?> getTodayNotifications(@AuthenticationPrincipal User user) {
         try {
-            List<NotificationDto> notificationDtos = notificationService.getTodayNotifications(user.getId());
+            List<NotificationDto> notifications = notificationService.getTodayNotifications(user.getId());
 
-            return ResponseEntity.ok().body(new NotificationListResponse(notificationDtos));
+            return ResponseEntity.ok().body(new NotificationListResponse(notifications));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -47,9 +46,9 @@ public class NotificationController {
     @GetMapping
     public ResponseEntity<?> getMyNotifications(@AuthenticationPrincipal User user) {
         try {
-            List<NotificationDto> notificationDtos = notificationService.getUserNotifications(user.getId());
+            List<NotificationDto> notifications = notificationService.getUserNotifications(user.getId());
 
-            return ResponseEntity.ok().body(new NotificationListResponse(notificationDtos));
+            return ResponseEntity.ok().body(new NotificationListResponse(notifications));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

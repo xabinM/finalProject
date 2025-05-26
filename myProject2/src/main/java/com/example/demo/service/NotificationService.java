@@ -4,6 +4,7 @@ import com.example.demo.domain.notification.Notification;
 import com.example.demo.domain.user.User;
 import com.example.demo.dto.notification.NotificationDto;
 import com.example.demo.dto.notification.NotificationRequest;
+import com.example.demo.exception.Exception;
 import com.example.demo.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,7 @@ public class NotificationService {
 
     public void markAsRead(Long notificationId) {
         Notification notification = notificationRepository.findById(notificationId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 알림이 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalArgumentException(Exception.NOT_EXIST_NOTIFICATION.getMessage()));
 
         notification.changeInReadStatus();
 
