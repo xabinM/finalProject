@@ -19,6 +19,20 @@ public enum Exception {
     NOT_EXIST_POST("해당 게시글이 존재하지 않습니다."),
     ONLY_EDIT_POST_BY_WRITER("작성자만 수정 및 삭제할 수 있습니다."),
 
+    // Calendar
+    NOT_EXIST_INTAKE_RECORD("해당 날짜의 복용 기록이 없습니다."),
+
+    //Comment
+    NOT_EXIST_COMMENT("존재하지 않는 댓글입니다."),
+    ONLY_EDIT_COMMENT_BY_WRITER("댓글 작성자만 수정 및 삭제할 수 있습니다."),
+
+    //Follow
+    NOT_EXIST_FOLLOW("해당 팔로우는 존재하지 않습니다."),
+
+    //Notification
+    NOT_EXIST_NOTIFICATION("해당 알림이 존재하지 않습니다.")
+
+
     ;
     private static final String PREFIX = "[ERROR] ";
     private final String message;

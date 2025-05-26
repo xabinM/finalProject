@@ -8,6 +8,7 @@ import com.example.demo.dto.calendar.DailyNutrientStatusDto;
 import com.example.demo.dto.calendar.DailySummaryResponse;
 import com.example.demo.dto.calendar.IntakeRecordRequest;
 import com.example.demo.dto.calendar.SupplementIntakeRecordDto;
+import com.example.demo.exception.Exception;
 import com.example.demo.repository.calendar.CalendarLogRepository;
 import com.example.demo.repository.calendar.DailyRecommendedIntakeRepository;
 import com.example.demo.repository.calendar.SupplementIntakeRecordRepository;
@@ -48,7 +49,7 @@ public class CalendarService {
     @Transactional(readOnly = true)
     public DailySummaryResponse createDailySummary(Long userId, LocalDate date) {
         CalendarLog calendarLog = calendarLogRepository.findByUserIdAndDate(userId, date)
-                .orElseThrow(() -> new IllegalArgumentException("해당 날짜의 복용 기록이 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException(Exception.NOT_EXIST_INTAKE_RECORD.getMessage()));
 
         // 1. 복용 기록 조회
         List<SupplementIntakeRecord> records = intakeRecordRepository.findByCalendarLogId(calendarLog.getId());
