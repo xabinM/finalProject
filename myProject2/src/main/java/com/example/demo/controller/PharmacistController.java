@@ -21,9 +21,9 @@ public class PharmacistController {
     @GetMapping
     public ResponseEntity<?> getAllPharmacists() {
         try {
-            List<PharmacistDto> pharmacistDto = pharmacistService.findAllPharmacists();
+            List<PharmacistDto> pharmacists = pharmacistService.findAllPharmacists();
 
-            return ResponseEntity.ok().body(new AllPharmacistsResponse(pharmacistDto));
+            return ResponseEntity.ok().body(new AllPharmacistsResponse(pharmacists));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

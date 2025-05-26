@@ -7,9 +7,9 @@ import java.util.List;
 @Getter
 public class AllPharmacistsResponse {
 
-    private List<PharmacistDto> pharmacistsDto;
+    private List<PharmacistDto> pharmacists;
 
-    public AllPharmacistsResponse(List<PharmacistDto> pharmacistsDto) {
-        this.pharmacistsDto = pharmacistsDto;
+    public AllPharmacistsResponse(List<PharmacistDto> pharmacists) {
+        this.pharmacists = pharmacists;
     }
 }
