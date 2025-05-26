@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public class LoginResponse {
-    private final LoginMemberDto user;
+    private final LoginUserDto user;
     private final String token;
 
-    public LoginResponse(LoginMemberDto userDto, String token) {
+    public LoginResponse(LoginUserDto userDto, String token) {
         this.user = userDto;
         this.token = token;
     }

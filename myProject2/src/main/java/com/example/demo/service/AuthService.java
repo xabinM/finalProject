@@ -3,7 +3,7 @@ package com.example.demo.service;
 import com.example.demo.domain.enums.UserRole;
 import com.example.demo.domain.user.Pharmacist;
 import com.example.demo.domain.user.User;
-import com.example.demo.dto.auth.LoginMemberDto;
+import com.example.demo.dto.auth.LoginUserDto;
 import com.example.demo.dto.auth.SignupRequest;
 import com.example.demo.exception.Exception;
 import com.example.demo.repository.UserRepository;
@@ -31,7 +31,7 @@ public class AuthService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(Exception.MEMBER_NOT_FOUND_EXCEPTION.getMessage()));
     }
 
-    public LoginMemberDto authenticate(String email, String password) {
+    public LoginUserDto authenticate(String email, String password) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(Exception.MEMBER_NOT_FOUND_EXCEPTION.getMessage()));
 
@@ -39,7 +39,7 @@ public class AuthService implements UserDetailsService {
             throw new BadCredentialsException(Exception.PASSWORD_NOT_MATCH_EXCEPTION.getMessage());
         }
 
-        return new LoginMemberDto(user);
+        return new LoginUserDto(user);
     }
 
     public String getToken(String email) {

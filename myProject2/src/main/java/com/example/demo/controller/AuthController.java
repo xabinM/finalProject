@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.*;
-import com.example.demo.dto.auth.LoginMemberDto;
+import com.example.demo.dto.auth.LoginUserDto;
 import com.example.demo.dto.auth.LoginRequest;
 import com.example.demo.dto.auth.LoginResponse;
 import com.example.demo.dto.auth.SignupRequest;
@@ -21,7 +21,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid LoginRequest request) {
         try {
-            LoginMemberDto userDto = authService.authenticate(request.getEmail(), request.getPassword());
+            LoginUserDto userDto = authService.authenticate(request.getEmail(), request.getPassword());
             String token = authService.getToken(request.getEmail());
 
             return ResponseEntity.ok(new LoginResponse(userDto, token));
