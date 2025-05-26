@@ -14,13 +14,13 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/community/posts")
+@RequestMapping("/api/community/posts/comments")
 public class CommentController {
 
     private final CommentService commentService;
 
     // 댓글 달기
-    @PostMapping("/comments/{postId}")
+    @PostMapping("/{postId}")
     public ResponseEntity<?> writeComment(@PathVariable Long postId,
                                              @RequestBody CommentRequest request,
                                              @AuthenticationPrincipal User user) {
@@ -34,7 +34,7 @@ public class CommentController {
     }
 
     // 댓글 리스트 얻기
-    @GetMapping("/comments/{postId}")
+    @GetMapping("/{postId}")
     public ResponseEntity<?> getComments(@PathVariable Long postId) {
         try {
             List<CommentDto> commentDtos = commentService.getComments(postId);
@@ -45,12 +45,12 @@ public class CommentController {
         }
     }
 
-    @PutMapping("/comments/{commentId}")
+    @PutMapping("/{commentId}")
     public ResponseEntity<?> editComment(@PathVariable Long commentId,
                                            @RequestBody CommentRequest request,
                                            @AuthenticationPrincipal User user) {
         try {
-            commentService.updatePost(commentId, request, user);
+            commentService.updateComment(commentId, request, user);
 
             return ResponseEntity.noContent().build();
         }
@@ -60,11 +60,11 @@ public class CommentController {
     }
 
     // 댓글 삭제
-    @DeleteMapping("/comments/{commentId}")
+    @DeleteMapping("/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable Long commentId,
                                               @AuthenticationPrincipal User user) {
         try {
-            commentService.delete(user, commentId);
+            commentService.deleteComment(user, commentId);
 
             return ResponseEntity.noContent().build();
         } catch (Exception e) {

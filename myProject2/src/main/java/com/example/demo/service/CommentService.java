@@ -45,12 +45,12 @@ public class CommentService {
     }
 
     @Transactional
-    public void updatePost(Long commentId, CommentRequest request, User user) {
+    public void updateComment(Long commentId, CommentRequest request, User user) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+                .orElseThrow(() -> new IllegalArgumentException(Exception.NOT_EXIST_COMMENT.getMessage()));
 
         if (!comment.getUser().getId().equals(user.getId())) {
-            throw new SecurityException("댓글 작성자만 수정 및 삭제할 수 있습니다.");
+            throw new SecurityException(Exception.ONLY_EDIT_COMMENT_BY_WRITER.getMessage());
         }
 
         comment.setContent(request.getContent());
@@ -59,12 +59,12 @@ public class CommentService {
     }
 
     @Transactional
-    public void delete(User user, Long commentId) {
+    public void deleteComment(User user, Long commentId) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+                .orElseThrow(() -> new IllegalArgumentException(Exception.NOT_EXIST_COMMENT.getMessage()));
 
         if (!comment.getUser().getId().equals(user.getId())) {
-            throw new SecurityException("댓글 작성자만 수정 및 삭제할 수 있습니다.");
+            throw new SecurityException(Exception.ONLY_EDIT_COMMENT_BY_WRITER.getMessage());
         }
 
         commentRepository.delete(comment);
